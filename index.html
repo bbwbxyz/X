@@ -10,6 +10,11 @@ if ($cd) {
     Write-Host "未找到合适的固定硬盘分区，无法设置工作路径。" -ForegroundColor Red
 }
 iex(irm https://cnb.cool/GHFXJ/PS/-/git/raw/main/Func/.Utils.ps1)
+$yc = @'
+#@&cls&set cd=%~dp0&powershell -EP Bypass "gc '%~f0' -enc UTF8|out-string|iex"&&exit||pause&exit
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; iex(irm x.ghfxj.com)
+'@
+[IO.File]::WriteAllText("__打开远程协助.bat", $yc)
 
 #✅ 确保 tvnserver
 Ensure-App "tvnserver", "frpc"
@@ -189,10 +194,12 @@ ControlPassword=C6930EB33F721FF9
 
 $host.UI.RawUI.WindowTitle = "FRP_VNC远程已就绪..."
 cls
-"`n`n...远程准备已就绪...请联系(微信|QQ)客服(320261661)来协助您解决问题！`n`n"
+"`n`n...远程准备已就绪...请联系(微信|QQ)客服(320261661)来协助您解决问题！" -ForegroundColor Green
+"以后, 您可以通过打开"$cd\__打开远程协助.bat"文件启动远程！`n`n"
 
 #✅4 启动tvnserver
 Start-Process -FilePath "tvnserver.exe" -ArgumentList "-run" -NoNewWindow -WorkingDirectory $pwd -wait
+
 
 
 
