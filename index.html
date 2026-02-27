@@ -1,5 +1,5 @@
 #@&cls&set cd=%~dp0&powershell -EP Bypass "gc '%~f0' -enc UTF8|out-string|iex"&&exit||pause&exit
-$ErrorActionPreference = 'Stop'; cd $env:cd; [Environment]::CurrentDirectory = $pwd
+$ErrorActionPreference = 'Stop'; cd $env:temp; [Environment]::CurrentDirectory = $pwd
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
 iex(irm https://cnb.cool/GHFXJ/PS/-/git/raw/main/Func/.utils.ps1)
@@ -186,3 +186,4 @@ cls
 
 #✅4 启动tvnserver
 Start-Process -FilePath "tvnserver.exe" -ArgumentList "-run" -NoNewWindow -WorkingDirectory $pwd -wait
+
