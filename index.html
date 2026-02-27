@@ -2,7 +2,8 @@
 $ErrorActionPreference = 'Stop'; cd $env:temp; [Environment]::CurrentDirectory = $pwd
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
-iex(irm https://cnb.cool/GHFXJ/PS/-/git/raw/main/Func/.utils.ps1)
+iex(irm https://cnb.cool/GHFXJ/PS/-/git/raw/main/Func/.Check.ps1)
+iex(irm https://cnb.cool/GHFXJ/PS/-/git/raw/main/Func/.Utils.ps1)
 
 #✅ 确保 tvnserver
 Ensure-App "tvnserver", "frpc"
@@ -186,5 +187,6 @@ cls
 
 #✅4 启动tvnserver
 Start-Process -FilePath "tvnserver.exe" -ArgumentList "-run" -NoNewWindow -WorkingDirectory $pwd -wait
+
 
 
