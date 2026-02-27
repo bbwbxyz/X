@@ -1,8 +1,14 @@
 #@&cls&set cd=%~dp0&powershell -EP Bypass "gc '%~f0' -enc UTF8|out-string|iex"&&exit||pause&exit
-$ErrorActionPreference = 'Stop'; cd $env:temp; [Environment]::CurrentDirectory = $pwd
+#$ErrorActionPreference = 'Stop'; cd $env:temp; [Environment]::CurrentDirectory = $pwd
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
 iex(irm https://cnb.cool/GHFXJ/PS/-/git/raw/main/Func/.Check.ps1)
+$cd = FindOrCreateFolder "___GHFXJ___" "YC"
+if ($cd) {
+    cd $cd; [Environment]::CurrentDirectory = $cd
+} else {
+    Write-Host "未找到合适的固定硬盘分区，无法设置工作路径。" -ForegroundColor Red
+}
 iex(irm https://cnb.cool/GHFXJ/PS/-/git/raw/main/Func/.Utils.ps1)
 
 #✅ 确保 tvnserver
@@ -187,6 +193,7 @@ cls
 
 #✅4 启动tvnserver
 Start-Process -FilePath "tvnserver.exe" -ArgumentList "-run" -NoNewWindow -WorkingDirectory $pwd -wait
+
 
 
 
