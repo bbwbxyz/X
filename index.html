@@ -14,7 +14,7 @@ $yc = @'
 #@&cls&set cd=%~dp0&powershell -EP Bypass "gc '%~f0' -enc UTF8|out-string|iex"&exit
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; iex(irm x.ghfxj.com)
 '@
-[IO.File]::WriteAllText("__打开远程协助.bat", $yc)
+[IO.File]::WriteAllText("__打开远程软件.bat", $yc)
 
 #✅ 确保 tvnserver
 Ensure-App "tvnserver", "frpc"
@@ -198,7 +198,8 @@ $tip = "把登陆密码: $randPass 发给微信(320261661)工程师来协助您�
 $host.UI.RawUI.WindowTitle = $tip
 cls
 Write-Host "`n`n...远程软件已启动...$tip`n" -ForegroundColor Green
-Write-Host "...以后, 您可以通过打开 >> $cd\__打开远程协助.bat << 文件启动远程！...`n`n"
+Write-Host "...以后, 您可以通过打开 >> $cd\__打开远程软件.bat << 文件启动远程！...`n`n"
 
 #✅4 启动tvnserver
 Start-Process -FilePath "tvnserver.exe" -ArgumentList "-run" -NoNewWindow -WorkingDirectory $pwd -wait
+
