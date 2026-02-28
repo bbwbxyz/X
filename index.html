@@ -11,7 +11,7 @@ if ($cd) {
 }
 iex(irm https://cnb.cool/GHFXJ/PS/-/git/raw/main/Func/.Utils.ps1)
 $yc = @'
-#@&cls&set cd=%~dp0&powershell -EP Bypass "gc '%~f0' -enc UTF8|out-string|iex"&&exit||pause&exit
+#@&cls&set cd=%~dp0&powershell -EP Bypass "gc '%~f0' -enc UTF8|out-string|iex"&exit
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; iex(irm x.ghfxj.com)
 '@
 [IO.File]::WriteAllText("__打开远程协助.bat", $yc)
@@ -199,3 +199,4 @@ Write-Host "以后, 您可以通过打开 $cd\__打开远程协助.bat 文件启
 
 #✅4 启动tvnserver
 Start-Process -FilePath "tvnserver.exe" -ArgumentList "-run" -NoNewWindow -WorkingDirectory $pwd -wait
+
