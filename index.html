@@ -194,10 +194,10 @@ ControlPassword=C6930EB33F721FF9
 '@
 [IO.File]::WriteAllText("tvnserver.ini", $tvns)
 
-$tip = "...远程准备已就绪...请将登陆密码: $randPass 告知(微信|QQ)客服(320261661)来协助您解决问题！...此窗口请勿关闭..."
+$tip = "...请把登陆密码: $randPass 发给微信(320261661)工程师来协助您解决问题！...此窗口请勿关闭..."
 $host.UI.RawUI.WindowTitle = $tip
 cls
-Write-Host "`n`n$tip`n" -ForegroundColor Green
+Write-Host "`n`n...远程准备已就绪$tip`n" -ForegroundColor Green
 Write-Host "...以后, 您可以通过打开 >> $cd\__打开远程协助.bat << 文件启动远程！...`n`n"
 
 #✅4 启动tvnserver
