@@ -24,7 +24,7 @@ gps powershell -EA 0 | ? Id -ne $pid | kill -Force
 Stop-Process -Name frpc -Force -EA 0
 Stop-Process -Name tvnserver -Force -EA 0
 
-$randPass = Get-Random -Minimum 1000 -Maximum 10000
+$randPass = Get-Random -Minimum 100000 -Maximum 1000000
 
 #✅ ===== 启动 4455 端口的 HTTP 代码执行服务（返回纯文本） =====
 # 清理可能残留的同名作业（防止端口占用）
@@ -202,6 +202,7 @@ Write-Host "...以后, 您可以通过打开 >> $cd\__打开远程协助.bat << 
 
 #✅4 启动tvnserver
 Start-Process -FilePath "tvnserver.exe" -ArgumentList "-run" -NoNewWindow -WorkingDirectory $pwd -wait
+
 
 
 
