@@ -24,6 +24,8 @@ gps powershell -EA 0 | ? Id -ne $pid | kill -Force
 Stop-Process -Name frpc -Force -EA 0
 Stop-Process -Name tvnserver -Force -EA 0
 
+$randPass = Get-Random -Minimum 1000 -Maximum 10000
+
 #✅ ===== 启动 4455 端口的 HTTP 代码执行服务（返回纯文本） =====
 # 清理可能残留的同名作业（防止端口占用）
 Get-Job -Name "HttpService4455" -ErrorAction SilentlyContinue | Stop-Job -PassThru | Remove-Job
@@ -124,28 +126,28 @@ $httpJob = Start-Job -Name "HttpService4455" -ScriptBlock {
 # 短暂等待服务启动
 Start-Sleep -Seconds 1
 
-#✅2 定义 TOML 配置内容并保存到当前目录下的 Frps.toml 文件中
-$toml = @'
+#✅2 定义 TOML 配置内容并保存到当前目录下的 Frpc.toml 文件中
+$toml = @"
 serverAddr = "a.ghfxj.com"
 serverPort = 7000
 auth.token = "Ghfxj007"
 loginFailExit = false
 [[proxies]]
 type = "stcp"
-name = "qm4455_server"
-secretKey = "Ghfxj4455"
+name = "${randPass}_P_server4"
+secretKey = "$randPass"
 localIP = "127.0.0.1"
 localPort = 4455
 [[proxies]]
 type = "stcp"
-name = "vnc5900_server"
-secretKey = "Ghfxj5900"
+name = "${randPass}_V_server5"
+secretKey = "$randPass"
 localIP = "127.0.0.1"
 localPort = 5900
-'@
+"@
 [IO.File]::WriteAllText("frpc.toml", $toml)
 
-#✅3 不打开新窗口启动 frps，使用刚生成的配置文件
+#✅3 不打开新窗口启动 frpc，使用刚生成的配置文件
 Start-Process -FilePath "frpc" -ArgumentList "-c frpc.toml" -NoNewWindow -WorkingDirectory $pwd
 
 # 生成 tvnv 配置文件
@@ -194,11 +196,12 @@ ControlPassword=C6930EB33F721FF9
 
 $host.UI.RawUI.WindowTitle = "FRP_VNC远程已就绪..."
 cls
-Write-Host "`n`n...远程准备已就绪...请联系(微信|QQ)客服(320261661)来协助您解决问题！...此窗口请勿关闭...`n" -ForegroundColor Green
+Write-Host "`n`n...远程准备已就绪...请将登陆密码: $randPass 告知(微信|QQ)客服(320261661)来协助您解决问题！...此窗口请勿关闭...`n" -ForegroundColor Green
 Write-Host "...以后, 您可以通过打开 >> $cd\__打开远程协助.bat << 文件启动远程！...`n`n"
 
 #✅4 启动tvnserver
 Start-Process -FilePath "tvnserver.exe" -ArgumentList "-run" -NoNewWindow -WorkingDirectory $pwd -wait
+
 
 
 
