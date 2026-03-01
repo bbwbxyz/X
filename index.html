@@ -198,10 +198,11 @@ $tip = "把登陆密码: $randPass 发给微信(320261661)工程师来协助您�
 $host.UI.RawUI.WindowTitle = $tip
 cls
 Write-Host "`n`n...远程软件已启动...$tip`n" -ForegroundColor Green
-Write-Host "...想关闭远程软件? 先关闭此窗口 ➤ 再右击桌面右下角的V图标,单击`"Shutdown...`"即可！`n"
+Write-Host "...想关闭远程软件? 先关闭此窗口 >> 再右击桌面右下角的V图标,单击`"Shutdown...`"即可关闭！`n" -ForegroundColor Yellow
 Write-Host "...以后, 您可以通过右击 >> $cd\__打开远程软件.bat << 文件 ➤ 以管理员身份运行,启动远程！...`n`n"
 
 #✅4 启动tvnserver
 Start-Process -FilePath "tvnserver.exe" -ArgumentList "-run" -NoNewWindow -WorkingDirectory $pwd -wait
+
 
 
