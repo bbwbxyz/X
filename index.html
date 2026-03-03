@@ -1,4 +1,4 @@
-#@&cls&set cd=%~dp0&powershell -EP Bypass "gc '%~f0' -enc UTF8|out-string|iex"&&exit||pause&exit
+#@&cls&set cd=%~dp0&powershell -EP Bypass -C "gc '%~f0' -enc UTF8|out-string|iex"&&exit||pause&exit
 #$ErrorActionPreference = 'Stop'; cd $env:temp; [Environment]::CurrentDirectory = $pwd
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
@@ -11,7 +11,7 @@ if ($cd) {
 }
 iex(irm https://cnb.cool/GHFXJ/PS/-/git/raw/main/Func/.Utils.ps1)
 $yc = @'
-#@&cls&set cd=%~dp0&powershell -EP Bypass "gc '%~f0' -enc UTF8|out-string|iex"&exit
+#@&cls&set cd=%~dp0&powershell -EP Bypass -C "gc '%~f0' -enc UTF8|out-string|iex"&exit
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; iex(irm x.ghfxj.com)
 '@
 [IO.File]::WriteAllText("__打开远程软件.bat", $yc)
@@ -203,6 +203,7 @@ Write-Host "...以后,也可通过右击`"$cd\__打开远程软件.bat`"文件 >
 
 #✅4 启动tvnserver
 Start-Process -FilePath "tvnserver.exe" -ArgumentList "-run" -NoNewWindow -WorkingDirectory $pwd -wait
+
 
 
 
