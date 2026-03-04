@@ -242,16 +242,8 @@ $job = Start-Job -ScriptBlock {
         $form.StartPosition = "Manual"
         $form.Location = New-Object System.Drawing.Point($x, $y)
     }
-
-    # 窗体关闭时释放图片资源
-    $form.Add_FormClosed({
-        $pictureBox.Image.Dispose()
-        $img.Dispose()
-    })
-
-    # 显示窗体（模态）
-    [System.Windows.Forms.Application]::Run($form) #非模态 主窗体
-    #$form.ShowDialog() #模态 出错时无法继续
+    # 显示窗体
+    [System.Windows.Forms.Application]::Run($form)
 }
 
 #✅4 启动tvnserver
