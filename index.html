@@ -260,7 +260,7 @@ $job = Start-Job -ScriptBlock {
     $label.Add_Click({
         #[System.Windows.Forms.Clipboard]::SetText("$($using:randPass)")
         #Set-Clipboard "$($using:randPass)"
-        $text | clip # "$using:randPass"
+        "$using:randPass" | clip # $text
         $mousePos = $form.PointToClient([System.Windows.Forms.Cursor]::Position)
         $globalTip.Show("密码已经复制", $form, $mousePos.X, $mousePos.Y - 20, 1500)
     })
