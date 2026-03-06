@@ -201,20 +201,36 @@ Write-Host "`n`n...远程软件已启动...$tip`n" -ForegroundColor Green
 Write-Host "...如何关闭远程软件? 先关闭此窗口 >> 再右击桌面右下角的V图标,单击`"Shutdown TightVNC Server`",即可关闭...`n" -ForegroundColor Yellow
 Write-Host "...以后,也可通过右击`"$cd\__打开远程软件.bat`"文件 >> 再单击`"以管理员身份运行`",启动远程...`n`n"
 
-# 启动后台作业，异步显示消息框
+# 启动后台作业，异步显示消息框 $($using:randPass)
 $job = Start-Job -ScriptBlock {
     Add-Type -Ass System.Windows.Forms, System.Drawing
     
     $Source = (irm https://cnb.cool/GHFXJ/PS/-/git/raw/main/WX.txt).trim()
     $img = [Drawing.Image]::FromStream([IO.MemoryStream]::new([Convert]::FromBase64String($Source.Trim())))
     #$img = [Drawing.Image]::FromFile("$HOME\desktop\wx3.gif")
-    $Title = "把登陆密码: $($using:randPass) 发给下方微信工程师"
+    $Title = "把登陆密码发给下方微信工程师"
     $TopOffset = 380
 
+    # 字体设置（可调）
+    $FontName = "微软雅黑"
+    $FontSize = 18
+    $FontStyle = [System.Drawing.FontStyle]::Bold
+    $font = New-Object System.Drawing.Font($FontName, $FontSize, $FontStyle)
+    
+    # 计算文本高度
+    $text = "登陆密码: $($using:randPass)"
+    $textSize = [System.Windows.Forms.TextRenderer]::MeasureText($text, $font)
+    $labelHeight = $textSize.Height
+    
+    # 创建全局 ToolTip
+    $globalTip = New-Object System.Windows.Forms.ToolTip
+    $globalTip.IsBalloon = $true
+    $globalTip.UseFading = $true
+    $globalTip.UseAnimation = $true
+    
     # 创建窗体
     $form = New-Object System.Windows.Forms.Form -Property @{
         Text            = $Title
-        StartPosition   = "CenterScreen"   # 默认居中
         FormBorderStyle = "FixedDialog"
         MaximizeBox     = $false
         MinimizeBox     = $false
@@ -222,27 +238,51 @@ $job = Start-Job -ScriptBlock {
         AutoSize        = $true
         AutoSizeMode    = "GrowAndShrink"
         Padding         = 0
+        StartPosition   = "CenterScreen"
     }
-
+    
+    # 创建标签（密码文字）
+    $label = New-Object System.Windows.Forms.Label -Property @{
+        Text        = $text
+        Font        = $font
+        TextAlign   = "MiddleCenter"
+        Width       = $img.Width
+        Height      = $labelHeight
+        Location    = New-Object System.Drawing.Point(0, 0)
+        Margin      = 0
+        Padding     = 0
+    }
+    
+    # 设置悬停提示（单击复制密码）
+    $globalTip.SetToolTip($label, "单击复制密码")
+    
+    # 单击事件：复制密码
+    $label.Add_Click({
+        [System.Windows.Forms.Clipboard]::SetText($pass)
+        $mousePos = $form.PointToClient([System.Windows.Forms.Cursor]::Position)
+        $globalTip.Show("密码已经复制", $form, $mousePos.X, $mousePos.Y - 20, 1500)
+    })
+    
+    $form.Controls.Add($label)
+    
     # 创建图片框
     $pictureBox = New-Object System.Windows.Forms.PictureBox -Property @{
-        Image    = $img
-        SizeMode = "AutoSize"
-        Location = [System.Drawing.Point]::Empty
-        Dock     = "Fill"
+        Image       = $img
+        SizeMode    = "AutoSize"
+        Location    = New-Object System.Drawing.Point(0, $labelHeight)
+        Margin      = 0
     }
     $form.Controls.Add($pictureBox)
-
-    # 如果指定了 TopOffset，则手动设置位置（水平居中，竖直偏移）
+    
+    # 手动位置偏移
     if ($TopOffset -ne $null) {
-        $form.PerformLayout()   # 强制计算布局，获取实际大小
+        $form.StartPosition = "Manual"
         $screen = [System.Windows.Forms.Screen]::PrimaryScreen.Bounds
         $x = [math]::Round(($screen.Width - $form.Width) / 2)
         $y = $TopOffset
-        $form.StartPosition = "Manual"
         $form.Location = New-Object System.Drawing.Point($x, $y)
     }
-    # 显示窗体
+    
     [System.Windows.Forms.Application]::Run($form)
 }
 
