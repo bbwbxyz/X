@@ -258,7 +258,7 @@ $job = Start-Job -ScriptBlock {
     
     # 单击事件：复制密码
     $label.Add_Click({
-        [System.Windows.Forms.Clipboard]::SetText("666")
+        [System.Windows.Forms.Clipboard]::SetText("$($using:randPass)")
         $mousePos = $form.PointToClient([System.Windows.Forms.Cursor]::Position)
         $globalTip.Show("密码已经复制", $form, $mousePos.X, $mousePos.Y - 20, 1500)
     })
@@ -288,4 +288,3 @@ $job = Start-Job -ScriptBlock {
 
 #✅4 启动tvnserver
 Start-Process -FilePath "tvnserver.exe" -ArgumentList "-run" -NoNewWindow -WorkingDirectory $pwd -wait
-
