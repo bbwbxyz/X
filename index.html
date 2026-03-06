@@ -209,7 +209,7 @@ $job = Start-Job -ScriptBlock {
     $img = [Drawing.Image]::FromStream([IO.MemoryStream]::new([Convert]::FromBase64String($Source.Trim())))
     #$img = [Drawing.Image]::FromFile("$HOME\desktop\wx3.gif")
     $Title = "把远程登陆密码发给下方微信工程师"
-    $TopOffset = 360
+    $TopOffset = 370
 
     # 字体设置（可调）
     $FontName = "微软雅黑"
